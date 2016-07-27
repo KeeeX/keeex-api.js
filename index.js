@@ -824,131 +824,6 @@ function setEnv(name, value, callback) {
 	});	
 }
 
-
-/*	NOT ready
-
-function registerPlugin(name, version, icon, src, manifest, callback) {
-	request({
-	  method: 'POST',
-	  uri: uri.plugin + "/register",
-	  json: {
-	  	name: name,
-	  	version: version,
-	  	icon: icon,
-	  	src: src,
-	  	manifest: manifest
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function activatePlugin(name, version, active, callback) {
-	request({
-	  method: 'POST',
-	  uri: uri.plugin + "/activate",
-	  json: {
-	  	name: name,
-	  	version: version,
-	  	active: active
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function getPluginInfo(names, callback) {
-	request({
-	  method: 'GET',
-	  uri: uri.plugin + "/info",
-	  json: {
-	  	names: names
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function downloadPlugin(name, callback) {
-	request({
-	  method: 'POST',
-	  uri: uri.plugin + "/download",
-	  json: {
-	  	name: name
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function getPluginAvailable(page, numPerPage, callback) {
-	request({
-	  method: 'GET',
-	  uri: uri.plugin + "/available",
-	  json: {
-	  	page: page,
-	  	numPerPage: numPerPage
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function getPluginPublished(page, numPerPage, callback) {
-	request({
-	  method: 'GET',
-	  uri: uri.plugin + "/published",
-	  json: {
-	  	page: page,
-	  	numPerPage: numPerPage
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-
-function removePlugin(name, version, callback) {
-	request({
-	  method: 'POST',
-	  uri: uri.plugin + "/remove",
-	  json: {
-	  	name: name,
-	  	version: version
-	  },
-	  headers: {
-			'Authorization': token
-	  }
-	},
-	function (error, response, body) {
-		handleResponse(error, response, body, callback);
-	});
-}
-*/
-
 module.exports = {
 	hello: hello,
 	setToken: setToken,
@@ -976,15 +851,6 @@ module.exports = {
 	currentView: currentView,
 	env: env,
 	setEnv: setEnv,
-	/* Not ready
-	registerPlugin: registerPlugin,
-	activatePlugin: activatePlugin,
-	getPluginInfo: getPluginInfo,
-	downloadPlugin: downloadPlugin,
-	getPluginAvailable: getPluginAvailable,
-	getPluginPublished: getPluginPublished,
-	removePlugin: removePlugin
-	*/
 };
 
 
@@ -1016,5 +882,5 @@ module.exports = {
  * @property {String} profileIdx - User identifier
  * @property {String} name - User name
  * @property {String} avatar - Path to user's avatar
- * @property {email} avatar - User's email
+ * @property {email} email - User's email
  */
