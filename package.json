@@ -16,5 +16,12 @@
   },
   "devDependencies": {
     "jsdoc": "^3.4.0"
+  },
+  "repository" : { 
+    "type" : "git", 
+    "url" : "https://github.com/KeeeX/keeex-api.js.git"
+  },
+  "bugs" : {
+    "url" : "https://github.com/KeeeX/keeex-api.js/issues"
   }
 }
