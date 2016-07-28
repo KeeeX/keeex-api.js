@@ -34,6 +34,7 @@ function handleResponse(error, response, body, callback) {
   		callback(null, body);
 }
 
+
 /**
  * Set the authorisation token to the given value for future API request.
  * Usualy you won't have to set it by yourself as getToken will store it.
@@ -44,18 +45,13 @@ function setToken(_token) {
 	token = _token;
 }
 
-/** 
- * Function you'll have to implement when using hello
- *
- * @callback hello_callback
- * @param {Array} error - Any error that could have happened null if none
- * @param {String} response - "hello world !"
- */
 
 /**
  * Test if the API is working
  * 
- * @param {hello_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened null if none
+ * @param {String} callback.response - "hello world !"
  */
 function hello(callback) {
 	request(uri.hello, function (error, response, body) {
@@ -64,22 +60,16 @@ function hello(callback) {
 }
 
 
-/** 
- * Function you'll have to implement when using getToken
- *
- * @callback getToken_callback
- * @param {Array} error - Any error that could have happened (deny), null if none
- * @param {Object} response - The API response if everything is okay
- * @param {String} response.token - The token to access the local API
- */
-
 /**
  * Ask an authentification token for the local API. It will be prompted to the user
  * if he wants to allow or deny the access
  * On success, it will automatically store the token for later use. No need to use setToken() afterward
  *
  * @param {string} appName - The application name
- * @param {getToken_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened (deny), null if none
+ * @param {Object} callback.response - The API response if everything is okay
+ * @param {String} callback.response.token - The token to access the local API
  */
 function getToken(appName, callback) {
 	var self = this;
@@ -100,16 +90,6 @@ function getToken(appName, callback) {
 
 
 /**
- * Function you'll have to implement when using keeex
- *
- * @callback keeex_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response - The API response if everything is okay
- * @param {String} response.path - The keeexed file path
- * @param {keeex_topic} response.topic - All informations about the topic created
- */
-
-/**
  * Keeex the given file with the parameters
  *
  * @param {String} path - Path of the file to keeex
@@ -121,7 +101,11 @@ function getToken(appName, callback) {
  * @param {boolean} option.timestamp - Put local creation time & ask for the topic to be timestamped on the bitcoin blockchain
  * @param {boolean} option.pattern - Put output filename pattern into metadata or not
  * @param {boolean} option.bitcoin - Put bitcoin signature into metadata or not
- * @param {keeex_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response - The API response if everything is okay
+ * @param {String} callback.response.path - The keeexed file path
+ * @param {keeex_topic} callback.response.topic - All informations about the topic created
  */
 function keeex(path, refs, prevs, description, option, callback) {
 	var opt = option || {};
@@ -132,7 +116,7 @@ function keeex(path, refs, prevs, description, option, callback) {
 	  	path: path,
 	  	refs: refs,
 	  	prevs: prevs,
-			name: opt.name,
+		name: opt.name,
 	  	description: description,
 	  	option: opt
 	  },
@@ -145,15 +129,6 @@ function keeex(path, refs, prevs, description, option, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using verify
- *
- * @callback verify_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response - The API response if everything is okay
- * @param {Integer} response.verifiedStatus - 100 Keeexed / 101 Not keeexed / 102 keeexed but the file was modified
- * @param {string} response.idx - idx of the file
- */
 
 /**
  * Verify the file in keeex
@@ -161,7 +136,11 @@ function keeex(path, refs, prevs, description, option, callback) {
  * @param {string} path - Absolute path of the file to be verified
  * @param {object} opt - Additionnal settings
  * @param {boolean} opt.import - Add the verified file in keeex database (if valid)
- * @param {verify_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response - The API response if everything is okay
+ * @param {Integer} callback.response.verifiedStatus - 100 Keeexed / 101 Not keeexed / 102 keeexed but the file was modified
+ * @param {string} callback.response.idx - idx of the file
  */
 function verify(path, opt, callback) {
 	request({
@@ -180,19 +159,14 @@ function verify(path, opt, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using getTopics
- *
- * @callback getTopics_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_topic[]} response - List of topic info for the idxs given
- */
 
 /**
  * Get the informations about the given idxs
  *
  * @param {string[]} idx - Array of idx to fetch informations
- * @param {getTopics_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_topic[]} callback.response - List of topic info for the idxs given
  */
 function getTopics(idxs, callback) {
 	request({
@@ -212,20 +186,14 @@ function getTopics(idxs, callback) {
 
 
 /**
- * Function you'll have to implement when using getLocations
- *
- * @callback getLocations_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Array} response - The list of locations asked
- * @param {String} response.idx - The topic idx
- * @param {String[]} response.location - List of known locations by keeex
- */
-
-/**
  * Get all file locations keeex knows about the given idxs
  *
  * @param {string[]} idx - Array of idx to fetch the location 
- * @param {getLocations_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Array} callback.response - The list of locations asked
+ * @param {String} callback.response.idx - The topic idx
+ * @param {String[]} callback.response.location - List of known locations by keeex
  */
 function getLocations(idxs, callback) {
 	request({
@@ -245,18 +213,12 @@ function getLocations(idxs, callback) {
 
 
 /**
- * Function you'll have to implement when using getAuthor
- *
- * @callback getAuthor_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_user} response - The author of the document
- */
-
-/**
  * Get the author of the given topic
  *
  * @param {string} idx - The topic idx
- * @param {getAuthor_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_user} callback.response - The author of the document
  */
 function getAuthor(idx, callback) {
 	request({
@@ -273,18 +235,12 @@ function getAuthor(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getComments
- *
- * @callback getComments_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_comment[]} response - Comment list of the topic
- */
-
-/**
  * Get the list of comments on a given topic
  *
  * @param {string} idx - The topic idx
- * @param {getComments_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_comment[]} callback.response - Comment list of the topic
  */
 function getComments(idx, callback) {
 	request({
@@ -301,19 +257,13 @@ function getComments(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using comment
- *
- * @callback comment_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_comment[]} response - Comment list of the topic
- */
-
-/**
  * Post a comment on the given topic
  *
  * @param {string} idx - The topic idx
  * @param {string} message - The comment message
- * @param {comment_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_comment[]} callback.response - Comment list of the topic
  */
 function comment(idx, message, callback) {
 	request({
@@ -332,18 +282,12 @@ function comment(idx, message, callback) {
 
 
 /**
- * Function you'll have to implement when using getPrevs
- *
- * @callback getPrevs_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_topic[]} response - List of previous versions
- */
-
-/**
  * Get a list of the previous version(s) of a given topic
  *
  * @param {string} idx - The topic idx
- * @param {getPrevs_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_topic[]} callback.response - List of previous versions
  */
 function getPrevs(idx, callback) {
 	request({
@@ -360,17 +304,12 @@ function getPrevs(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getNext
- * @callback getNexts_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_topic[]} response - List of next versions
- */
-
-/**
  * Get a list of the next version(s) of a given topic
  *
  * @param {string} idx - The topic idx
- * @param {getNexts_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_topic[]} callback.response - List of next versions
  */
 function getNexts(idx, callback) {
 	request({
@@ -387,18 +326,12 @@ function getNexts(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getRefs
- *
- * @callback getRefs_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_topic[]} response - List of topic
- */
-
-/**
  * Get a list of the all topics refering to the given one (including comments and previous versions)
  *
  * @param {string} idx - The topic idx
- * @param {getRefs_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_topic[]} callback.response - List of topic
  */
 function getRefs(idx, callback) {
 	request({
@@ -415,20 +348,14 @@ function getRefs(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getShared
- *
- * @callback getShared_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response - The API response if everything is okay
- * @param {String[]} response.received - List of profile idx who reveived
- * @param {String[]} response.shared - List of profile idx who are shared
- */
-
-/**
  * Get a list of people that partici
  *
  * @param {string} idx - The topic idx
- * @param {getShared_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response - The API response if everything is okay
+ * @param {String[]} callback.response.received - List of profile idx who reveived
+ * @param {String[]} callback.response.shared - List of profile idx who are shared
  */
 function getShared(idx, callback) {
 	request({
@@ -445,18 +372,12 @@ function getShared(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getAgreements
- *
- * @callback getAgreements_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_user[]} response - List of users who agreed
- */
-
-/**
  * Get a list of the all topics refering to the given one
  *
  * @param {string} idx - The topic idx
- * @param {getAgreements_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_user[]} callback.response - List of users who agreed
  */
 function getAgreements(idx, callback) {
 	request({
@@ -473,19 +394,6 @@ function getAgreements(idx, callback) {
 
 
 /**
- * Function you'll have to implement when using getShared
- *
- * @callback getShared_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response - The API response if everything is okay
- * @param {String} response.idx - Topic idx
- * @param {Object} response.shared 
- * @param {String[]} response.shared.shared - People who are shared
- * @param {String[]} response.shared.received - People who received
- * @param {String} response.link - Url to download the ciphred file 
- */
-
-/**
  * Share a topic 
  *
  * @param {string} idx - The topic idx
@@ -493,7 +401,14 @@ function getAgreements(idx, callback) {
  * @param {string[]} recipients - List of recipients idx
  * @param {Object} options - Sharing options
  * @param {String} options.email - Whether to send an email to the recipient or not
- * @param {getShared_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response - The API response if everything is okay
+ * @param {String} callback.response.idx - Topic idx
+ * @param {Object} callback.response.shared 
+ * @param {String[]} callback.response.shared.shared - People who are shared
+ * @param {String[]} callback.response.shared.received - People who received
+ * @param {String} callback.response.link - Url to download the ciphred file 
  */
 function share(idx, path, recipients, option, callback) {
 	request({
@@ -514,21 +429,14 @@ function share(idx, path, recipients, option, callback) {
 }
 
 
-
-/**
- * Function you'll have to implement when using makeRef
- *
- * @callback makeRef_callback
- * @param {Array} error - Any error that could have happened, null if none
- */
-
 /**
  * Make a reference 
  *
  * @param {string} type - The reference type ("reference", "version" or "agreement")
  * @param {string} from - The topic idx when type is "reference" or "version", null when "agreement"
  * @param {string} to - The topic idx
- * @param {makeRef_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
  */
 function makeRef(type, from, to, callback) {
 	request({
@@ -548,18 +456,13 @@ function makeRef(type, from, to, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using remove
- *
- * @callback remove_callback
- * @param {Array} error - Any error that could have happened, null if none
- */
 
 /**
  * Remove a topic from database
  *
  * @param {string} idx - The topic idx to remove
- * @param {remove_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
  */
 function remove(idx, callback) {
 	request({
@@ -575,18 +478,13 @@ function remove(idx, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using getMine
- *
- * @callback getMine_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_user} response - The user's info
- */
 
 /**
  * Get current user informations
  *
- * @param {getMine_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {function} callback.error - Any error that could have happened, null if none
+ * @param {keeex_user} callback.response - The user's info
  */
 function getMine(callback) {
 	request({
@@ -602,19 +500,14 @@ function getMine(callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using getUsers
- *
- * @callback getUsers_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_user[]} response - Users' info
- */
 
 /**
  * Get users info froma list of profile idxs
  *
  * @param {string[]} idx - List of idx
- * @param {getUsers_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_user[]} callback.response - Users' info
  */
 function getUsers(idxs, callback) {
 	request({
@@ -632,19 +525,14 @@ function getUsers(idxs, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using getUserByEmail
- *
- * @callback getUserByEmail_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_user} response - User's info
- */
 
 /**
  * Get users info froma list of profile idxs
  *
  * @param {string} email - The email of an user
- * @param {getUserByEmail_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_user} callback.response - User's info
  */
 function getUserByEmail(email, callback) {
 	request({
@@ -660,14 +548,6 @@ function getUserByEmail(email, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using generateFile
- *
- * @callback generateFile_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response 
- * @param {String} response.file - Path of the created file
- */
 
 /**
  * Generate a file, usefull when you want to create a keeex message
@@ -675,7 +555,10 @@ function getUserByEmail(email, callback) {
  * @param {string} name - The file name
  * @param {string} description - The file description
  * @param {string} target - Path of the destination folder
- * @param {generateFile_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response 
+ * @param {String} callback.response.file - Path of the created file
  */
 function generateFile(name, description, target, callback) {
 	request({
@@ -695,12 +578,6 @@ function generateFile(name, description, target, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using search
- * @callback search_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {keeex_topic[]} response - List of topic found
- */
 
 /**
  * Get current user informations
@@ -718,7 +595,9 @@ function generateFile(name, description, target, callback) {
  * @param {boolean} option.concept - Search for a keeex concept or not
  * @param {boolean} option.older_version - Search for old versions or not
  * @param {boolean} option.description - Search in topic description or not
- * @param {search_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {keeex_topic[]} callback.response - List of topic found
  */
 function search(filter, topics, negTopics, skip, limit, option, callback) {
 	request({
@@ -741,20 +620,16 @@ function search(filter, topics, negTopics, skip, limit, option, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using currentView
- * @callback currentView_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response
- * @param {String} response.idx - The topic idx
- */
 
 /**
  * Get the idx of the document/topic curently displayed in keeex
  *
- * @param {currentView_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {String[]} callback.err - Any error that could have happened, null if none
+ * @param {Object} callback.body -Response content
+ * @param {String} callback.body.idx -Topic idx
  */
-function currentView(callback) {
+function getCurrentView(callback) {
 	request({
 	  method: 'GET',
 	  uri: uri.util + "/currentView",
@@ -768,21 +643,17 @@ function currentView(callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using env
- * @callback env_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {Object} response
- * @param {String} response.value - The value of the environment variable
- */
 
 /**
  * Get the value of a keeex environment variable
  *
  * @param {String} name - The variable name. It can be **DATA_PATH**, **KEEEX_PATH**, **KEEEXED_PATH**, **RECEIVED_PATH**, **FILENAME_FORMAT**
- * @param {env_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {Object} callback.response
+ * @param {String} callback.response.value - The value of the environment variable
  */
-function env(name, callback) {
+function getEnv(name, callback) {
 	request({
 	  method: 'GET',
 	  uri: uri.util + "/env" + "/" + name,
@@ -796,19 +667,15 @@ function env(name, callback) {
 	});
 }
 
-/**
- * Function you'll have to implement when using setEnv
- * @callback setEnv_callback
- * @param {Array} error - Any error that could have happened, null if none
- * @param {null} response
- */
 
 /**
  * Set the value of a keeex environment variable
  *
  * @param {String} name - The variable name. It can be **KEEEXED_PATH**, **RECEIVED_PATH**, **FILENAME_FORMAT**
  * @param {String} value - The variable value
- * @param {setEnv_callback} callback - The callback that handles the response.
+ * @param {function} callback - Callback that you'll have to implement, it will handle the response
+ * @param {Array} callback.error - Any error that could have happened, null if none
+ * @param {null} callback.response
  */
 function setEnv(name, value, callback) {
 	request({
@@ -850,8 +717,8 @@ module.exports = {
 	remove: remove,
 	generateFile: generateFile,
 	search: search,
-	currentView: currentView,
-	env: env,
+	getCurrentView: getCurrentView,
+	getEnv: getEnv,
 	setEnv: setEnv,
 };
 
