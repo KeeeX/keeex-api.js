@@ -45,16 +45,16 @@ function setToken(_token) {
 }
 
 /** 
- * Function you'll have to implement when using getToken
+ * Function you'll have to implement when using hello
  *
  * @callback hello_callback
- * @param {Array} error - Any error that could have happened (deny), null if none
- * @param {Object} response - The API response if everything is okay
+ * @param {Array} error - Any error that could have happened null if none
+ * @param {String} response - "hello world !"
  */
 
 /**
- * This is not working
- *
+ * Test if the API is working
+ * 
  * @param {hello_callback} callback - The callback that handles the response.
  */
 function hello(callback) {
@@ -159,14 +159,17 @@ function keeex(path, refs, prevs, description, option, callback) {
  * Verify the file in keeex
  *
  * @param {string} path - Absolute path of the file to be verified
+ * @param {object} opt - Additionnal settings
+ * @param {boolean} opt.import - Add the verified file in keeex database (if valid)
  * @param {verify_callback} callback - The callback that handles the response.
  */
-function verify(path, callback) {
+function verify(path, opt, callback) {
 	request({
 	  method: 'POST',
 	  uri: uri.topic + "/verify",
 	  json: {
-	  	path: path
+	  	path: path,
+			option: opt
 	  },
 	  headers: {
 			'Authorization': token
@@ -176,7 +179,6 @@ function verify(path, callback) {
 		handleResponse(error, response, body, callback);
 	});
 }
-
 
 /**
  * Function you'll have to implement when using getTopics
