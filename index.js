@@ -348,7 +348,7 @@ function getRefs(idx, callback) {
 
 
 /**
- * Get a list of people that partici
+ * Get a list of people that have access to a given topic
  *
  * @param {string} idx - The topic idx
  * @param {function} callback - Callback that you'll have to implement, it will handle the response
@@ -502,9 +502,9 @@ function getMine(callback) {
 
 
 /**
- * Get users info froma list of profile idxs
+ * Get users info from a list of profile idxs
  *
- * @param {string[]} idx - List of idx
+ * @param {string[]} idxs - List of idx
  * @param {function} callback - Callback that you'll have to implement, it will handle the response
  * @param {Array} callback.error - Any error that could have happened, null if none
  * @param {keeex_user[]} callback.response - Users' info
